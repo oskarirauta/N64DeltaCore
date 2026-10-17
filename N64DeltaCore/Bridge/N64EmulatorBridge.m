@@ -314,6 +314,14 @@ static void MupenSetAudioSpeed(int percent)
 {
     self.gameURL = gameURL;
     
+    /* Ensure directories exist */
+    [[NSFileManager defaultManager] createDirectoryAtURL:N64EmulatorBridge.coreDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
+    [[NSFileManager defaultManager] createDirectoryAtURL:self.configDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
+    [[NSFileManager defaultManager] createDirectoryAtURL:self.gameSaveDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    NSURL *appSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject URLByAppendingPathComponent:@"Mupen64Plus" isDirectory:YES];
+    [[NSFileManager defaultManager] createDirectoryAtURL:appSupportURL withIntermediateDirectories:YES attributes:nil error:nil];
+    
     /* Copy .ini files */
     NSArray<NSString *> *iniFiles = @[@"GLideN64", @"GLideN64.custom", @"mupen64plus"];
     for (NSString *filename in iniFiles)
@@ -776,7 +784,7 @@ static void MupenSetAudioSpeed(int percent)
     NSURL *configDirectoryURL = [N64EmulatorBridge.coreDirectoryURL URLByAppendingPathComponent:@"Config" isDirectory:YES];
     
     NSError *error = nil;
-    if (![[NSFileManager defaultManager] createDirectoryAtURL:configDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil])
+    if (![[NSFileManager defaultManager] createDirectoryAtURL:configDirectoryURL withIntermediateDirectories:YES attributes:nil error:&error])
     {
         NSLog(@"Unable to create Config Directory. %@", error);
     }
