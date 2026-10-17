@@ -319,7 +319,11 @@ static void MupenSetAudioSpeed(int percent)
     [[NSFileManager defaultManager] createDirectoryAtURL:self.configDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
     [[NSFileManager defaultManager] createDirectoryAtURL:self.gameSaveDirectoryURL withIntermediateDirectories:YES attributes:nil error:nil];
     
+#if TARGET_OS_TV
+    NSURL *appSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask].firstObject URLByAppendingPathComponent:@"Mupen64Plus" isDirectory:YES];
+#else
     NSURL *appSupportURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask].firstObject URLByAppendingPathComponent:@"Mupen64Plus" isDirectory:YES];
+#endif
     [[NSFileManager defaultManager] createDirectoryAtURL:appSupportURL withIntermediateDirectories:YES attributes:nil error:nil];
     
     /* Copy .ini files */
